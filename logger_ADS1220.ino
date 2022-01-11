@@ -4,25 +4,25 @@
 extern uint8_t SmallFont[];
 OLED myOLED(SDA, SCL, 8);
 /*
-  Код для обработки инкрементального энкодера, 
+  Код для обработки инкрементального энкодера,
   ручка которого перемещается дискретно,
   и переход из одного положения в другое сопровождается сменой
-  всех четырёх состояний выходов. 
+  всех четырёх состояний выходов.
 */
 
 // используемые пины
-const int encPinA = 4; // первый выход энкодера
-const int encPinB = 3; // второй выход энкодера
-const int PinSW = 5;   // кнопка
+byte encPinA = 4; // первый выход энкодера
+byte encPinB = 3; // второй выход энкодера
+byte PinSW = 5;   // кнопка
 
 // переменные для хранения состояний пинов
 // (чтобы не производить ненужных считываний)
 bool encA;
 bool encB;
-bool sw;
-bool mem = false;
 bool menu_on = false;
+bool sub_menu_on = false;
 byte menu_list_count = 0;
+byte limit_value = 18;
 
 // переменные для информации о предыдущих состояниях
 // и движениях энкодера
@@ -31,8 +31,8 @@ bool clockwise1 = true;  // переход по часовой стрелке 1 
 bool clockwise2 = false; // переход по часовой стрелке 2 (от 00)
 
 // изменяемое значение
-int old_value = 0;
-int value = 0;
+byte old_value = 1;
+byte value = 1;
 byte pos_pointer = 16;
 
 void setup()
@@ -57,28 +57,18 @@ void loop()
   // считывание состояния выходов энкодера
   encA = digitalRead(encPinA);
   encB = digitalRead(encPinB);
-  ConditionEncoder();
+  ConditionEncoder(limit_value);
 
-  if (menu_on == true && old_value != value)
+  if (menu_on == true && old_value != value && sub_menu_on == false)
   {
-    PosPointer();
-    switch (menu_list_count)
-    {
-    case 0:
-      DrawMenuList0(pos_pointer);
-      break;
-    case 1:
-      DrawMenuList1(pos_pointer);
-      break;
-    case 2:
-      DrawMenuList2(pos_pointer);
-      break;
-    case 3:
-      DrawMenuList3(pos_pointer);
-      break;
-    }
+    PosPointerMainMenu();
+    DrawMenuList(menu_list_count, pos_pointer);
+  }
 
-    //Serial.println("--------------" + String(pos_pointer));
+  if (menu_on == true && old_value != value && sub_menu_on == true)
+  {
+    PosPointerSubMenu();
+    DrawSubMenu(value, pos_pointer);
   }
 
   old_value = value;

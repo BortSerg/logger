@@ -1,20 +1,32 @@
 void SwitchClick(byte condition)
 {
-  if (condition == LOW && mem == false)
+  if (condition == LOW && menu_on == false && sub_menu_on == false) // обработка входа в меню
   {
+    value = 1;
+    DrawMenuList(menu_list_count, pos_pointer);
     Serial.println("sw down");
-    mem = true;
+    delay(1000);
     menu_on = true;
-    DrawMenuList0(16);
+    condition = !condition; // защита от удержания кнопки (антидребезг)
   }
-  if (condition == HIGH && mem == true)
+
+  if (condition == LOW && menu_on == true && sub_menu_on == false) // обработка входа в подменю
   {
-    Serial.println("sw UP");
-    mem = false;
+    pos_pointer = 16;
+    value = 1;
+    DrawSubMenu(value, pos_pointer);
+    sub_menu_on = true;
+    condition = !condition; // защита от удержания кнопки (антидребезг)
   }
+  /*
+      if (condition == LOW && menu_on == true && sub_menu_on == true) // обработка выбраного значения в подменю
+      {
+        // condition = !condition; // защита от удержания кнопки (антидребезг)
+      }
+      */
 }
 
-void ConditionEncoder()
+void ConditionEncoder(byte limit)
 {
   // если в состояние 11 пришли не из 11
   // и 2 раза детектировалось движение
@@ -32,6 +44,14 @@ void ConditionEncoder()
       value--;
     }
     prev11 = true;
+    if (value > limit)
+    {
+      value = limit;
+    }
+    if (value < 1)
+    {
+      value = 1;
+    }
     Serial.println(value);
   }
 
