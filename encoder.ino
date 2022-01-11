@@ -6,6 +6,7 @@ void SwitchClick(byte condition)
     DrawMenuList(pos_pointer);
     Serial.println("sw down");
     delay(500);
+    main_screen_on = false;
     menu_on = true;
     condition = !condition; // защита от удержания кнопки (антидребезг)
   }
@@ -20,11 +21,10 @@ void SwitchClick(byte condition)
     condition = !condition; // защита от удержания кнопки (антидребезг)
   }
 
-  if (condition == LOW && menu_on == false && sub_menu_on == true) // обработка выбраного значения в подменю    
+  if (condition == LOW && menu_on == false && sub_menu_on == true) // обработка выбраного значения в подменю
   {
     condition = !condition; // защита от удержания кнопки (антидребезг)
-  } 
-  
+  }
 }
 
 void ConditionEncoder(byte limit)

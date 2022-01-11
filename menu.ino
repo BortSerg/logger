@@ -31,6 +31,13 @@ void InitDisplay()
   myOLED.clrScr();
 }
 
+void DrawMainScreen()
+{
+  myOLED.clrScr();
+  myOLED.print(F("MAIN SCREEN"), CENTER, 0);
+  myOLED.update();
+}
+
 void DrawMenuList(byte pos)
 {
   myOLED.clrScr();
@@ -43,7 +50,7 @@ void DrawMenuList(byte pos)
     myOLED.print(F("2.  PGA gain"), 10, 26);
     myOLED.print(F("3.  MUX Ch"), 10, 36);
     myOLED.print(F("4.  BSC"), 10, 46);
-    myOLED.print(F("5.  TempSens"), 10, 56);
+    myOLED.print(F("5.  Temp Sensor"), 10, 56);
   }
 
   if (value >= 6 && value < 11)
@@ -69,8 +76,7 @@ void DrawMenuList(byte pos)
     myOLED.print(F("16.  RESET"), 10, 16);
     myOLED.print(F("17.  BACK"), 10, 26);
   }
-
-myOLED.update();
+  myOLED.update();
 }
 
 void DrawSubMenu(byte number_sub_menu, byte pos)
@@ -152,16 +158,15 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
     limit_value = 3;
 
     myOLED.print(F("1.  TS OFF"), 10, 16);
-    myOLED.print(F("2.  TSS ON"), 10, 26);
+    myOLED.print(F("2.  TS ON"), 10, 26);
     myOLED.print(F("3.  Back"), 10, 36);
 
     break;
 
   case 6:
     limit_value = 3;
-
-    myOLED.print(F("1.  Single short mode"), 10, 16);
-    myOLED.print(F("2.  Continuous mode"), 10, 26);
+    myOLED.print(F("1.  Single short"), 10, 16);
+    myOLED.print(F("2.  Continuous"), 10, 26);
     myOLED.print(F("3.  Back"), 10, 36);
 
     break;
@@ -169,9 +174,9 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
   case 7:
     limit_value = 4;
 
-    myOLED.print(F("1.  Normal_Mode"), 10, 16);
-    myOLED.print(F("2.  Duty cycle mode"), 10, 26);
-    myOLED.print(F("3.  Turbo mode"), 10, 36);
+    myOLED.print(F("1.  Normal"), 10, 16);
+    myOLED.print(F("2.  Duty cycle"), 10, 26);
+    myOLED.print(F("3.  Turbo"), 10, 36);
     myOLED.print(F("4.  Back"), 10, 46);
 
     break;
@@ -195,43 +200,100 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
     break;
 
   case 9:
-
+    limit_value = 9;
+    if (value < 6)
+    {
+      myOLED.print(F("1.  IDAC OFF"), 10, 16);
+      myOLED.print(F("2.  10uA"), 10, 26);
+      myOLED.print(F("3.  50uA"), 10, 36);
+      myOLED.print(F("4.  100uA"), 10, 46);
+      myOLED.print(F("5.  250uA"), 10, 56);
+    }
+    if (value >= 6)
+    {
+      myOLED.print(F("6.  500uA"), 10, 16);
+      myOLED.print(F("7.  1000uA"), 10, 26);
+      myOLED.print(F("8.  1500uA"), 10, 36);
+      myOLED.print(F("9.  Back"), 10, 46);
+    }
     break;
 
   case 10:
-
+    limit_value = 3;
+    myOLED.print(F("1.  PWS OPEN"), 10, 16);
+    myOLED.print(F("2.  PWS AUTO"), 10, 26);
+    myOLED.print(F("3.  Back"), 10, 36);
     break;
 
   case 11:
-
+    limit_value = 5;
+    myOLED.print(F("1.  FIR OFF"), 10, 16);
+    myOLED.print(F("2.  50/60 Hz"), 10, 26);
+    myOLED.print(F("3.  50 Hz"), 10, 36);
+    myOLED.print(F("4.  60 Hz"), 10, 46);
+    myOLED.print(F("5.  Back"), 10, 56);
     break;
 
   case 12:
-
+    limit_value = 5;
+    myOLED.print(F("1.  Internal"), 10, 16);
+    myOLED.print(F("2.  REFP0 - REFN0"), 10, 26);
+    myOLED.print(F("3.  AN0 - AN3"), 10, 36);
+    myOLED.print(F("4.  Analog"), 10, 46);
+    myOLED.print(F("5.  Back"), 10, 56);
     break;
 
   case 13:
-
+    limit_value = 3;
+    myOLED.print(F("1.  DRDY ONLY"), 10, 16);
+    myOLED.print(F("2.  DRDY/DOUT "), 10, 26);
+    myOLED.print(F("3.  Back"), 10, 36);
     break;
 
   case 14:
-
+    limit_value = 8;
+    if (value < 6)
+    {
+      myOLED.print(F("1.  IDAC2 OFF"), 10, 16);
+      myOLED.print(F("2.  AIN0 - REFP1"), 10, 26);
+      myOLED.print(F("3.  AIN1"), 10, 36);
+      myOLED.print(F("4.  AIN2"), 10, 46);
+      myOLED.print(F("5.  AIN3 - REFN1"), 10, 56);
+    }
+    if (value >= 6)
+    {
+      myOLED.print(F("6.  REFP0"), 10, 16);
+      myOLED.print(F("7.  REFN0"), 10, 26);
+      myOLED.print(F("8.  Back"), 10, 36);
+    }
     break;
 
   case 15:
-
+    limit_value = 8;
+    if (value < 6)
+    {
+      myOLED.print(F("1.  IDAC1 OFF"), 10, 16);
+      myOLED.print(F("2.  AIN0 - REFP1"), 10, 26);
+      myOLED.print(F("3.  AIN1"), 10, 36);
+      myOLED.print(F("4.  AIN2"), 10, 46);
+      myOLED.print(F("5.  AIN3 - REFN1"), 10, 56);
+    }
+    if (value >= 6)
+    {
+      myOLED.print(F("6.  REFP0"), 10, 16);
+      myOLED.print(F("7.  REFN0"), 10, 26);
+      myOLED.print(F("8.  Back"), 10, 36);
+    }
     break;
 
   case 16:
-
+    Serial.println("Restore default settings!");
     break;
 
   case 17:
-
-    break;
-
-  case 18:
-
+    menu_on = false;
+    sub_menu_on = false;
+    main_screen_on = true;
     break;
   }
   myOLED.update();
