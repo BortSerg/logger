@@ -1,33 +1,97 @@
-void SwitchClick(byte condition)
+void SwitchClick(byte condition) // обработка нажатий на энкодер
 {
   if (condition == LOW && menu_on == false && sub_menu_on == false) // обработка входа в меню
   {
-    value = 1;
-    DrawMenuList(pos_pointer);
-    Serial.println("sw down");
-    delay(500);
-    main_screen_on = false;
+    value = 1; // сброс позиции указателя вменю
+
+    old_value += value; //имитация вращения энкодера
+
     menu_on = true;
-    condition = !condition; // защита от удержания кнопки (антидребезг)
+    main_screen_on = false;
+
+    delay(200);
+    condition = !condition;
   }
 
-  if (condition == LOW && menu_on == true && sub_menu_on == false) // обработка входа в подменю
+  if (condition == LOW && menu_on == true && sub_menu_on == false) // обработка из меню для входа в подменю
   {
-    number_sub_menu = value;
-    value = 1;
-    DrawSubMenu(number_sub_menu, pos_pointer);
-    sub_menu_on = true;
+    pos_pointer = 16; // сброс позиции указателя
+
+    number_sub_menu = value; // номер подменю = номеру пункта в основном меню
+    value = 1;               // сброс значений энкодера для отсчета с первого пункта
+    old_value += value;      //имитация вращения энкодера
+
     menu_on = false;
-    condition = !condition; // защита от удержания кнопки (антидребезг)
+    sub_menu_on = true;
+
+    delay(200);
+    condition = !condition;
   }
 
   if (condition == LOW && menu_on == false && sub_menu_on == true) // обработка выбраного значения в подменю
   {
-    condition = !condition; // защита от удержания кнопки (антидребезг)
+    condition = !condition;
+    if ((number_sub_menu == 1 || number_sub_menu == 4 || number_sub_menu == 5 || number_sub_menu == 6 || number_sub_menu == 10 || number_sub_menu == 13) && value == 3)
+    {
+      sub_menu_on = false;
+      menu_on = true;
+      pos_pointer = 16;
+      value = 1;
+      delay(200);
+    }
+    if ((number_sub_menu == 8 || number_sub_menu == 14 || number_sub_menu == 15) && value == 8)
+    {
+      sub_menu_on = false;
+      menu_on = true;
+      pos_pointer = 16;
+      value = 1;
+      delay(200);
+    }
+    if ((number_sub_menu == 3 && value == 18) || (number_sub_menu == 7 && value == 4) || ((number_sub_menu == 2 || number_sub_menu == 9) && value == 9))
+    {
+      sub_menu_on = false;
+      menu_on = true;
+      pos_pointer = 16;
+      value = 1;
+      delay(200);
+    }
+    if ((number_sub_menu == 11 || number_sub_menu == 12) && value == 5)
+    {
+      sub_menu_on = false;
+      menu_on = true;
+      pos_pointer = 16;
+      value = 1;
+      delay(200);
+    }
   }
 }
 
-void ConditionEncoder(byte limit)
+void PosPointer() // передвижение  по меню указателя
+{
+  if (value > old_value)
+  {
+    pos_pointer += 10;
+    if ((value == 6 || value == 11 || value == 16) && pos_pointer > 56)
+    {
+      pos_pointer = 16;
+    }
+  }
+
+  if (value < old_value)
+  {
+    pos_pointer -= 10;
+    if ((value == 5 || value == 10 || value == 15) && pos_pointer < 16)
+    {
+      pos_pointer = 56;
+    }
+    if (value == 1 && pos_pointer < 16)
+    {
+      pos_pointer = 16;
+    }
+  }
+}
+
+void ConditionEncoder(byte limit) // обработка поворотов экнокдера
 {
   // если в состояние 11 пришли не из 11
   // и 2 раза детектировалось движение

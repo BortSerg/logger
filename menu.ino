@@ -1,36 +1,3 @@
-void PosPointer()
-{
-  if (value > old_value)
-  {
-    pos_pointer += 10;
-    if ((value == 6 || value == 11 || value == 16) && pos_pointer > 56)
-    {
-      pos_pointer = 16;
-    }
-  }
-
-  if (value < old_value)
-  {
-    pos_pointer -= 10;
-    if ((value == 5 || value == 10 || value == 15) && pos_pointer < 16)
-    {
-      pos_pointer = 56;
-    }
-    if (value == 1 && pos_pointer < 16)
-    {
-      pos_pointer = 16;
-    }
-  }
-}
-
-void InitDisplay()
-{
-  myOLED.begin();
-  myOLED.setFont(SmallFont);
-  myOLED.setBrightness(255);
-  myOLED.clrScr();
-}
-
 void DrawMainScreen()
 {
   myOLED.clrScr();
@@ -81,6 +48,8 @@ void DrawMenuList(byte pos)
 
 void DrawSubMenu(byte number_sub_menu, byte pos)
 {
+  Serial.println("In the sub menu method!");
+  Serial.println("number_sub_menu " + String(number_sub_menu));
   myOLED.clrScr();
   myOLED.print(F("SETTINGS"), CENTER, 0);
   myOLED.print(F(">"), 0, pos);
@@ -156,11 +125,9 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
 
   case 5:
     limit_value = 3;
-
     myOLED.print(F("1.  TS OFF"), 10, 16);
     myOLED.print(F("2.  TS ON"), 10, 26);
     myOLED.print(F("3.  Back"), 10, 36);
-
     break;
 
   case 6:
@@ -168,17 +135,14 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
     myOLED.print(F("1.  Single short"), 10, 16);
     myOLED.print(F("2.  Continuous"), 10, 26);
     myOLED.print(F("3.  Back"), 10, 36);
-
     break;
 
   case 7:
     limit_value = 4;
-
     myOLED.print(F("1.  Normal"), 10, 16);
     myOLED.print(F("2.  Duty cycle"), 10, 26);
     myOLED.print(F("3.  Turbo"), 10, 36);
     myOLED.print(F("4.  Back"), 10, 46);
-
     break;
 
   case 8:
@@ -287,13 +251,38 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
     break;
 
   case 16:
+  {
     Serial.println("Restore default settings!");
-    break;
+    // load ads1220 setDefaultSettings
+    String s = "Restoring";
+
+    for (byte i = 0; i < 5; i++)
+    {
+      myOLED.clrScr();
+      myOLED.print(s, 10, 6);
+      s += ".";
+      myOLED.update();
+      delay(200);
+    }
+
+    menu_on = false;
+    sub_menu_on = false;
+    main_screen_on = true;
+    pos_pointer = 16;
+    number_sub_menu = 0;
+  }
+  break;
 
   case 17:
     menu_on = false;
     sub_menu_on = false;
     main_screen_on = true;
+    pos_pointer = 16;
+    number_sub_menu = 0;
+    delay(200);
+    break;
+
+  default:
     break;
   }
   myOLED.update();

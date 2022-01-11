@@ -24,7 +24,7 @@ bool sub_menu_on = false;
 bool main_screen_on = true;
 byte menu_list_count = 0;
 byte sub_menu_list_count = 0;
-byte number_sub_menu = 1;
+byte number_sub_menu = 0;
 byte limit_value = 17;
 
 // переменные для информации о предыдущих состояниях
@@ -66,16 +66,15 @@ void loop()
   if (menu_on == true && old_value != value && sub_menu_on == false)
   {
     PosPointer();
-
     DrawMenuList(pos_pointer);
   }
 
   if (menu_on == false && old_value != value && sub_menu_on == true)
   {
     PosPointer();
-
     DrawSubMenu(number_sub_menu, pos_pointer);
   }
+
   if (main_screen_on == true)
   {
     DrawMainScreen();
