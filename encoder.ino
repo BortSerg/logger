@@ -18,12 +18,12 @@ void SwitchClick(byte condition)
     sub_menu_on = true;
     condition = !condition; // защита от удержания кнопки (антидребезг)
   }
-  /*
-      if (condition == LOW && menu_on == true && sub_menu_on == true) // обработка выбраного значения в подменю
-      {
-        // condition = !condition; // защита от удержания кнопки (антидребезг)
-      }
-      */
+/*
+  if (condition == LOW && menu_on == true && sub_menu_on == true) // обработка выбраного значения в подменю    
+  {
+      // condition = !condition; // защита от удержания кнопки (антидребезг)
+  } 
+  */
 }
 
 void ConditionEncoder(byte limit)

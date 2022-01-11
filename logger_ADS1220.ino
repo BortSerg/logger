@@ -34,6 +34,7 @@ bool clockwise2 = false; // переход по часовой стрелке 2 
 byte old_value = 1;
 byte value = 1;
 byte pos_pointer = 16;
+byte pos_pointer_sub = 16;
 
 void setup()
 {
