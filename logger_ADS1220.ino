@@ -72,6 +72,7 @@ void loop()
   if (menu_on == false && old_value != value && sub_menu_on == true)
   {
     PosPointer();
+    
     DrawSubMenu(number_sub_menu, pos_pointer);
   }
 
