@@ -22,7 +22,9 @@ bool encB;
 bool menu_on = false;
 bool sub_menu_on = false;
 byte menu_list_count = 0;
-byte limit_value = 18;
+byte sub_menu_list_count = 0;
+byte number_sub_menu = 1;
+byte limit_value = 17;
 
 // переменные для информации о предыдущих состояниях
 // и движениях энкодера
@@ -34,7 +36,7 @@ bool clockwise2 = false; // переход по часовой стрелке 2 
 byte old_value = 1;
 byte value = 1;
 byte pos_pointer = 16;
-byte pos_pointer_sub = 16;
+//byte pos_pointer_sub = 16;
 
 void setup()
 {
@@ -62,14 +64,15 @@ void loop()
 
   if (menu_on == true && old_value != value && sub_menu_on == false)
   {
-    PosPointerMainMenu();
-    DrawMenuList(menu_list_count, pos_pointer);
+    PosPointer();
+    
+    DrawMenuList(pos_pointer);
   }
 
-  if (menu_on == true && old_value != value && sub_menu_on == true)
+  if (menu_on == false && old_value != value && sub_menu_on == true)
   {
-    PosPointerSubMenu();
-    DrawSubMenu(value, pos_pointer);
+    PosPointer();
+    DrawSubMenu(number_sub_menu, pos_pointer);
   }
 
   old_value = value;

@@ -3,27 +3,28 @@ void SwitchClick(byte condition)
   if (condition == LOW && menu_on == false && sub_menu_on == false) // обработка входа в меню
   {
     value = 1;
-    DrawMenuList(menu_list_count, pos_pointer);
+    DrawMenuList(pos_pointer);
     Serial.println("sw down");
-    delay(1000);
+    delay(500);
     menu_on = true;
     condition = !condition; // защита от удержания кнопки (антидребезг)
   }
 
   if (condition == LOW && menu_on == true && sub_menu_on == false) // обработка входа в подменю
   {
-    pos_pointer = 16;
+    number_sub_menu = value;
     value = 1;
-    DrawSubMenu(value, pos_pointer);
+    DrawSubMenu(number_sub_menu, pos_pointer);
     sub_menu_on = true;
+    menu_on = false;
     condition = !condition; // защита от удержания кнопки (антидребезг)
   }
-/*
-  if (condition == LOW && menu_on == true && sub_menu_on == true) // обработка выбраного значения в подменю    
+
+  if (condition == LOW && menu_on == false && sub_menu_on == true) // обработка выбраного значения в подменю    
   {
-      // condition = !condition; // защита от удержания кнопки (антидребезг)
+    condition = !condition; // защита от удержания кнопки (антидребезг)
   } 
-  */
+  
 }
 
 void ConditionEncoder(byte limit)
