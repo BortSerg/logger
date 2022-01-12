@@ -58,8 +58,8 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
   {
   case 1:
     limit_value = 3;
-    myOLED.print(F("1.  ByPass ON"), 10, 16);
-    myOLED.print(F("2.  ByPass OFF"), 10, 26);
+    myOLED.print(F("1.  ByPass OFF"), 10, 16);
+    myOLED.print(F("2.  ByPass ON"), 10, 26);
     myOLED.print(F("3.  Back"), 10, 36);
     break;
 
@@ -83,7 +83,7 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
     break;
 
   case 3:
-    limit_value = 18;
+    limit_value = 13;
     if (value < 6)
     {
       myOLED.print(F("1.  MUX_AIN0_AIN1"), 10, 16);
@@ -100,26 +100,18 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
       myOLED.print(F("9.  MUX_AIN0_AVSS"), 10, 46);
       myOLED.print(F("10. MUX_AIN1_AVSS"), 10, 56);
     }
-    if (value >= 11 && value < 16)
+    if (value >= 11 && value < 14)
     {
-      myOLED.print(F("11. MUX_AIN2_AIN3"), 10, 16);
-      myOLED.print(F("12. MUX_AIN1_AIN0"), 10, 26);
-      myOLED.print(F("13. MUX_AIN3_AIN2"), 10, 36);
-      myOLED.print(F("14. MUX_AIN0_AVSS"), 10, 46);
-      myOLED.print(F("15. MUX_AIN1_AVSS"), 10, 56);
-    }
-    if (value >= 16 && value < 19)
-    {
-      myOLED.print(F("16. MUX_AIN2_AVSS"), 10, 16);
-      myOLED.print(F("17. MUX_AIN3_AVSS"), 10, 26);
-      myOLED.print(F("18. Back"), 10, 36);
+      myOLED.print(F("11. MUX_AIN2_AVSS"), 10, 16);
+      myOLED.print(F("12. MUX_AIN3_AVSS"), 10, 26);
+      myOLED.print(F("13. Back"), 10, 36);
     }
     break;
 
   case 4:
     limit_value = 3;
-    myOLED.print(F("1.  BCS_OFF"), 10, 16);
-    myOLED.print(F("2.  BCS_ON "), 10, 26);
+    myOLED.print(F("1.  BCS OFF"), 10, 16);
+    myOLED.print(F("2.  BCS ON "), 10, 26);
     myOLED.print(F("3.  Back"), 10, 36);
     break;
 

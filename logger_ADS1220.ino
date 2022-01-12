@@ -1,8 +1,14 @@
-
 #include <OLED_I2C.h>
+#include <ADS1220.h>
+#include <SPI.h>
+
+#define cs_pin 7
+#define rdy_pin 6
 
 extern uint8_t SmallFont[];
 OLED myOLED(SDA, SCL, 8);
+
+ADS1220 ADS;
 /*
   Код для обработки инкрементального энкодера,
   ручка которого перемещается дискретно,
@@ -22,8 +28,8 @@ bool encB;
 bool menu_on = false;
 bool sub_menu_on = false;
 bool main_screen_on = true;
-byte menu_list_count = 0;
-byte sub_menu_list_count = 0;
+// byte menu_list_count = 0;
+//  byte sub_menu_list_count = 0;
 byte number_sub_menu = 0;
 byte limit_value = 17;
 
@@ -42,12 +48,18 @@ byte pos_pointer = 16;
 void setup()
 {
   Serial.begin(115200);
+
   pinMode(encPinA, INPUT);
   digitalWrite(encPinA, HIGH); // включаем подтяжку к плюсу
   pinMode(encPinB, INPUT);
   digitalWrite(encPinB, HIGH);
   pinMode(PinSW, OUTPUT);
   digitalWrite(PinSW, HIGH); // включаем подтяжку к плюсу
+
+  pinMode(cs_pin, OUTPUT);
+  pinMode(rdy_pin, INPUT);
+
+  ADS.begin(cs_pin, rdy_pin);
 
   InitDisplay();
 }
