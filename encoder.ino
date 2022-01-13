@@ -1,9 +1,20 @@
-void BackInMenu()
+void BackToMainMenu()
 {
 	display_number = 1;
-	pos_pointer = 16;
-	value = 1;
-	old_value += value;
+
+	if (set_settings_flag == true) // если параметр изменился - записать в массив. false только при выборе пункта back
+	{
+		Serial.println("Set Settings array");
+		pos_settings_pointer[number_sub_menu - 1][0] = value;
+		pos_settings_pointer[number_sub_menu - 1][1] = pos_pointer;
+	}
+
+	pos_pointer = old_pos_pointer;
+	value = number_sub_menu;
+	old_value = value; // для избежания смещения позиции указателя
+	set_settings_flag = true;
+	DrawMainMenu(pos_pointer); // отрисовка главного меню без изменения положения энкодера
+
 	delay(200);
 }
 
@@ -18,23 +29,23 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 {
 	if (condition == LOW)
 	{
-		condition = !condition;
 		delay(200);
 
 		switch (display_number)
 		{
-		case 0:					  // обработка входа в меню
-			value = 1;			  // сброс позиции указателя вменю
-			old_value += value; //имитация вращения энкодера
+		case 0:					// обработка входа в меню
+			value = 1;			// сброс позиции указателя вменю
+			old_value += value; //имитация вращения энкодера имитация вращения энкодера для начала прорисовки меню
 			display_number = 1;
 			break;
 
-		case 1:					// обработка нажатий в меню для входа в подменю
-			pos_pointer = 16; // сброс позиции указателя
+		case 1:							   // обработка нажатий в меню для входа в подменю
+			old_pos_pointer = pos_pointer; // запоминание позиции указателя на экране до входа в подменю
+			pos_pointer = 16;			   // сброс позиции указателя
 
 			number_sub_menu = value; // номер подменю = номеру пункта в основном меню
-			value = 1;					 // сброс значений энкодера для отсчета с первого пункта
-			old_value += value;		 // имитация вращения энкодера
+			value = 1;				 // сброс значений энкодера для отсчета с первого пункта
+			old_value += value;		 // имитация вращения энкодера для начала прорисовки меню
 
 			display_number = 2;
 			break;
@@ -46,17 +57,16 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				switch (value)
 				{
 				case 1:
-				{
 					ADS.PGA(PGA_BYPASS_OFF);
-					BackInMenu();
-				}
-				break;
+					BackToMainMenu();
+					break;
 				case 2:
 					ADS.PGA(PGA_BYPASS_ON);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -66,38 +76,39 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.Gain(GAIN_1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.Gain(GAIN_2);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.Gain(GAIN_8);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.Gain(GAIN_8);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
 					ADS.Gain(GAIN_16);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 6:
 					ADS.Gain(GAIN_32);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 7:
 					ADS.Gain(GAIN_64);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 8:
 					ADS.Gain(GAIN_128);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 9:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -107,54 +118,55 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.MuxChanel(MUX_AIN0_AIN1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.MuxChanel(MUX_AIN0_AIN2);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.MuxChanel(MUX_AIN0_AIN3);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.MuxChanel(MUX_AIN1_AIN2);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
 					ADS.MuxChanel(MUX_AIN1_AIN3);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 6:
 					ADS.MuxChanel(MUX_AIN2_AIN3);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 7:
 					ADS.MuxChanel(MUX_AIN1_AIN0);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 8:
 					ADS.MuxChanel(MUX_AIN3_AIN2);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 9:
 					ADS.MuxChanel(MUX_AIN0_AVSS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 10:
 					ADS.MuxChanel(MUX_AIN1_AVSS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 11:
 					ADS.MuxChanel(MUX_AIN2_AVSS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 12:
 					ADS.MuxChanel(MUX_AIN3_AVSS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 13:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -164,14 +176,15 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.BCS(BCS_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.BCS(BCS_ON);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -181,13 +194,14 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.TemperatureSensor(TS_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.TemperatureSensor(TS_ON);
-					BackInMenu();
+					BackToMainMenu();
 				case 3:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -197,14 +211,15 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.ConversionMode(SINGLE_SHORT_MODE);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.ConversionMode(CONTINUOUS_MODE);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -214,19 +229,20 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.OperatingMode(NORMAL_MODE);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 
 				case 2:
 					ADS.OperatingMode(DUTY_CYCLE_MODE);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.OperatingMode(TURBO_MODE);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -236,34 +252,35 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.DataRate(DR_20SPS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.DataRate(DR_45SPS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.DataRate(DR_90SPS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.DataRate(DR_175SPS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
 					ADS.DataRate(DR_330SPS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 6:
 					ADS.DataRate(DR_600SPS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 7:
 					ADS.DataRate(DR_1000SPS);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 8:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -273,38 +290,39 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.IDAC(IDAC_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.IDAC(IDAC_10uA);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.IDAC(IDAC_50uA);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.IDAC(IDAC_100uA);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
 					ADS.IDAC(IDAC_250uA);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 6:
 					ADS.IDAC(IDAC_500uA);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 7:
 					ADS.IDAC(IDAC_1000uA);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 8:
 					ADS.IDAC(IDAC_1500uA);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 9:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -314,14 +332,15 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.PSW(PSW_OPEN);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.PSW(PSW_AUTO);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -331,22 +350,23 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.FIR(FIR_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.FIR(FIR_50_60);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.FIR(FIR_50);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.FIR(FIR_60);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -356,22 +376,23 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.VREF(VREF_INTERNAL);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.VREF(VREF_REFP0_REFN0);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.VREF(VREF_AN0_AN3);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.VREF(VREF_ANALOG);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -381,14 +402,15 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.DRDYM(DRDYM_DRDY_ONLY);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.DRDYM(DRDYM_DRDY_DOUT);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -398,34 +420,35 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.I2MUX(IDAC2_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.I2MUX(IDAC2_AIN0_REFP1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.I2MUX(IDAC2_AIN1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.I2MUX(IDAC2_AIN2);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
 					ADS.I2MUX(IDAC2_AIN3_REFN1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 6:
 					ADS.I2MUX(IDAC2_REFP0);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 7:
 					ADS.I2MUX(IDAC2_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 8:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;
@@ -435,34 +458,35 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.I1MUX(IDAC1_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 2:
 					ADS.I1MUX(IDAC1_AIN0_REFP1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 3:
 					ADS.I1MUX(IDAC1_AIN1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 4:
 					ADS.I1MUX(IDAC1_AIN2);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 5:
 					ADS.I1MUX(IDAC1_AIN3_REFN1);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 6:
 					ADS.I1MUX(IDAC1_REFP0);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 7:
 					ADS.I1MUX(IDAC1_OFF);
-					BackInMenu();
+					BackToMainMenu();
 					break;
 				case 8:
-					BackInMenu();
+					set_settings_flag = false;
+					BackToMainMenu();
 					break;
 				}
 				break;

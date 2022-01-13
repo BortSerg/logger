@@ -52,6 +52,11 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
 	myOLED.print(F("SETTINGS"), CENTER, 0);
 	myOLED.print(F(">"), 0, pos);
 
+	if ((pos_settings_pointer[number_sub_menu - 1][0] < 6 && value < 6) || (pos_settings_pointer[number_sub_menu - 1][0] >= 6 && pos_settings_pointer[number_sub_menu - 1][0] < 11 && value >= 6 && value < 11) || (pos_settings_pointer[number_sub_menu - 1][0] >= 11 && pos_settings_pointer[number_sub_menu - 1][0] < 14 && value >= 11 && value < 14))
+	{
+		myOLED.print(F("<"), RIGHT, pos_settings_pointer[number_sub_menu - 1][1]);
+	}
+
 	switch (number_sub_menu)
 	{
 	case 1:
