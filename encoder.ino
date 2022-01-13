@@ -1,44 +1,47 @@
 void BackInMenu()
 {
-	sub_menu_on = false;
-	menu_on = true;
+	display_number = 1;
 	pos_pointer = 16;
 	value = 1;
 	old_value += value;
 	delay(200);
 }
 
+void BackToMainScreen()
+{
+	display_number = 0;
+	pos_pointer = 16;
+    number_sub_menu = 0;
+}
+
 void SwitchClick(byte condition) // обработка нажатий на энкодер
 {
-	if (condition == LOW && menu_on == false && sub_menu_on == false) // обработка входа в меню
+	if (condition == LOW && display_number == 0) // обработка входа в меню
 	{
 		value = 1; // сброс позиции указателя вменю
 
 		old_value += value; //имитация вращения энкодера
-
-		menu_on = true;
-		main_screen_on = false;
+		display_number = 1;
 
 		delay(200);
 		condition = !condition;
 	}
 
-	if (condition == LOW && menu_on == true && sub_menu_on == false) // обработка из меню для входа в подменю
+	if (condition == LOW && display_number == 1) // обработка из меню для входа в подменю
 	{
 		pos_pointer = 16; // сброс позиции указателя
 
 		number_sub_menu = value; // номер подменю = номеру пункта в основном меню
 		value = 1;					 // сброс значений энкодера для отсчета с первого пункта
 		old_value += value;		 //имитация вращения энкодера
-
-		menu_on = false;
-		sub_menu_on = true;
+		
+		display_number = 2;
 
 		delay(200);
 		condition = !condition;
 	}
 
-	if (condition == LOW && menu_on == false && sub_menu_on == true) // обработка выбраного значения в подменю
+	if (condition == LOW && display_number == 2) // обработка выбраного значения в подменю
 	{
 		condition = !condition;
 

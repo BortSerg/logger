@@ -9,41 +9,29 @@ extern uint8_t SmallFont[];
 OLED myOLED(SDA, SCL, 8);
 
 ADS1220 ADS;
-/*
-  Код для обработки инкрементального энкодера,
-  ручка которого перемещается дискретно,
-  и переход из одного положения в другое сопровождается сменой
-  всех четырёх состояний выходов.
-*/
 
 // используемые пины
 byte encPinA = 4; // первый выход энкодера
 byte encPinB = 3; // второй выход энкодера
-byte PinSW = 5;   // кнопка
+byte PinSW = 5;   // кнопка энкодера
 
 // переменные для хранения состояний пинов
-// (чтобы не производить ненужных считываний)
 bool encA;
 bool encB;
-bool menu_on = false;
-bool sub_menu_on = false;
-bool main_screen_on = true;
-// byte menu_list_count = 0;
-//  byte sub_menu_list_count = 0;
-byte number_sub_menu = 0;
-byte limit_value = 17;
 
-// переменные для информации о предыдущих состояниях
-// и движениях энкодера
+byte display_number = 0;  // индекс скрина 0-main screen; 1-main menu screen; 2-sub menu screen
+byte number_sub_menu = 0; // номер подменю
+
+// переменные для информации о состояниях и движениях энкодера
 bool prev11;             // предыдущее состояние было 11
 bool clockwise1 = true;  // переход по часовой стрелке 1 (от 11)
 bool clockwise2 = false; // переход по часовой стрелке 2 (от 00)
 
-// изменяемое значение
-byte old_value = 1;
-byte value = 1;
-byte pos_pointer = 16;
-// byte pos_pointer_sub = 16;
+// изменяемое значение энкодера и указателя
+byte old_value = 1;    // прошлое значение энкодера
+byte value = 1;        // значение энкодера
+byte pos_pointer = 16; // позиция указателя (начальное положение указателя = 16, исходя из конфигурации меню)
+byte limit_value = 17; // предел значений энкодера
 
 void setup()
 {
@@ -66,7 +54,6 @@ void setup()
 
 void loop()
 {
-
   //считывание кнопки энкодера
   SwitchClick(digitalRead(PinSW));
 
@@ -75,22 +62,25 @@ void loop()
   encB = digitalRead(encPinB);
   ConditionEncoder(limit_value);
 
-  if (menu_on == true && old_value != value && sub_menu_on == false)
-  {
-    PosPointer();
-    DrawMenuList(pos_pointer);
-  }
-
-  if (menu_on == false && old_value != value && sub_menu_on == true)
-  {
-    PosPointer();
-    DrawSubMenu(number_sub_menu, pos_pointer);
-  }
-
-  if (main_screen_on == true)
+  if (display_number == 0)
   {
     DrawMainScreen();
   }
 
+  if (old_value != value)
+  {
+    switch (display_number)
+    {
+    case 1:
+      PosPointer();
+      DrawMainMenu(pos_pointer);
+      break;
+
+    case 2:
+      PosPointer();
+      DrawSubMenu(number_sub_menu, pos_pointer);
+      break;
+    }
+  }
   old_value = value;
 }
