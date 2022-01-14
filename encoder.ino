@@ -23,7 +23,7 @@ void BackToMainScreen()
 	display_number = 0;
 	pos_pointer = 16;
 	number_sub_menu = 0;
-	ADS.START();	// запуск вычислений
+	ADS.Start();	// запуск вычислений
 }
 
 void SwitchClick(byte condition) // обработка нажатий на энкодер
