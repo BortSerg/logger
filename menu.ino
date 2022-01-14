@@ -29,7 +29,7 @@ void DrawMainMenu(byte pos)
 		myOLED.print(F("7.  Operating"), 10, 26);
 		myOLED.print(F("8.  SPS"), 10, 36);
 		myOLED.print(F("9.  IDAC current"), 10, 46);
-		myOLED.print(F("10. PWS"), 10, 56);
+		myOLED.print(F("10. PSW"), 10, 56);
 	}
 
 	if (value >= 11 && value < 16)
@@ -55,9 +55,9 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
 	myOLED.print(F("SETTINGS"), CENTER, 0);
 	myOLED.print(F(">"), 0, pos);
 
-	if ((pos_settings_pointer[number_sub_menu - 1][0] < 6 && value < 6) || (pos_settings_pointer[number_sub_menu - 1][0] >= 6 && pos_settings_pointer[number_sub_menu - 1][0] < 11 && value >= 6 && value < 11) || (pos_settings_pointer[number_sub_menu - 1][0] >= 11 && pos_settings_pointer[number_sub_menu - 1][0] < 14 && value >= 11 && value < 14))
+	if ((Config.POS_SETTINGS_POINTER[number_sub_menu - 1][0] < 6 && value < 6) || (Config.POS_SETTINGS_POINTER[number_sub_menu - 1][0] >= 6 && Config.POS_SETTINGS_POINTER[number_sub_menu - 1][0] < 11 && value >= 6 && value < 11) || (Config.POS_SETTINGS_POINTER[number_sub_menu - 1][0] >= 11 && Config.POS_SETTINGS_POINTER[number_sub_menu - 1][0] < 14 && value >= 11 && value < 14))
 	{
-		myOLED.print(F("<"), RIGHT, pos_settings_pointer[number_sub_menu - 1][1]);
+		myOLED.print(F("<"), RIGHT, Config.POS_SETTINGS_POINTER[number_sub_menu - 1][1]);
 	}
 
 	switch (number_sub_menu)
@@ -182,8 +182,8 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
 
 	case 10:
 		limit_value = 3;
-		myOLED.print(F("1.  PWS OPEN"), 10, 16);
-		myOLED.print(F("2.  PWS AUTO"), 10, 26);
+		myOLED.print(F("1.  PSW OPEN"), 10, 16);
+		myOLED.print(F("2.  PSW AUTO"), 10, 26);
 		myOLED.print(F("3.  Back"), 10, 36);
 		break;
 
@@ -251,7 +251,9 @@ void DrawSubMenu(byte number_sub_menu, byte pos)
 	case 16:
 	{
 		Serial.println("Restore default settings!");
-		// load ads1220 setDefaultSettings
+		Config.FIRST_CHECK_BYTE = 0x50;
+		RestoreSettings();
+
 		String s = "Restoring";
 
 		for (byte i = 0; i < 5; i++)

@@ -1,6 +1,7 @@
 #include <OLED_I2C.h>
 #include <ADS1220.h>
 #include <SPI.h>
+#include <EEPROM.h>
 
 #define cs_pin 7
 #define rdy_pin 6
@@ -34,12 +35,20 @@ byte pos_pointer = 16;	  // позиция указателя (начально�
 byte old_pos_pointer = 0; // позиция указателя до перехода в подменю
 byte limit_value = 17;	  // предел значений энкодера
 
-byte pos_settings_pointer[15][2]; // [значение value][значение pos_pointer] каждая строка массива соответствует номеру подменю (number_sub_menu -1)
-bool set_settings_flag = true;	  // флаг наличия изминений в настройках
+// byte pos_settings_pointer[15][2]; // [значение value][значение pos_pointer] каждая строка массива соответствует номеру подменю (number_sub_menu -1)
+bool set_settings_flag = true; // флаг наличия изминений в настройках
+
+struct ConfigEEPROM
+{
+	byte FIRST_CHECK_BYTE;			  // число от фонаря, для понимания есть ли в памяти структура с настройками или нет
+	byte ADS_SETTINGS_BYTE[4];		  // массив значений регистров настройки АЦП
+	byte POS_SETTINGS_POINTER[15][2]; // массив для храннения указателей в подменю на установленый параметр [значение value][значение pos_pointer] каждая строка массива соответствует номеру подменю (number_sub_menu -1)
+} Config;
 
 void setup()
 {
 	Serial.begin(115200);
+	Read_Config();
 
 	pinMode(encPinA, INPUT);
 	digitalWrite(encPinA, HIGH);
@@ -51,16 +60,14 @@ void setup()
 	pinMode(cs_pin, OUTPUT);
 	pinMode(rdy_pin, INPUT);
 
-	ADS.begin(cs_pin, rdy_pin);
-	ADS.PGA(PGA_BYPASS_ON);
-	ADS.Gain(GAIN_1);
-	ADS.MuxChanel(MUX_AIN0_AIN1);
-
-	ADS.ConversionMode(CONTINUOUS_MODE);
-	ADS.OperatingMode(NORMAL_MODE);
-	ADS.DataRate(DR_20SPS);
-	ADS.FIR(FIR_50);
 	InitDisplay();
+
+	ADS.begin(cs_pin, rdy_pin);
+	// RestoreSettings();
+	for (byte i; i < 4; i++)
+	{
+		Serial.println(ADS.ReadConfig(i), HEX);
+	}
 }
 
 void loop()

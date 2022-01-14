@@ -5,8 +5,26 @@ void BackToMainMenu()
 	if (set_settings_flag == true) // если параметр изменился - записать в массив. false только при выборе пункта back
 	{
 		Serial.println("Set Settings array");
-		pos_settings_pointer[number_sub_menu - 1][0] = value;
-		pos_settings_pointer[number_sub_menu - 1][1] = pos_pointer;
+		Config.POS_SETTINGS_POINTER[number_sub_menu - 1][0] = value;
+		Config.POS_SETTINGS_POINTER[number_sub_menu - 1][1] = pos_pointer;
+
+		if (number_sub_menu < 4)
+		{
+			Config.ADS_SETTINGS_BYTE[config_address_reg0] = ADS.ReadConfig(config_address_reg0);
+		}
+		if (number_sub_menu >= 4 && number_sub_menu < 9)
+		{
+			Config.ADS_SETTINGS_BYTE[config_address_reg1] = ADS.ReadConfig(config_address_reg1);
+		}
+		if (number_sub_menu >= 9 && number_sub_menu < 13)
+		{
+			Config.ADS_SETTINGS_BYTE[config_address_reg2] = ADS.ReadConfig(config_address_reg2);
+		}
+		if (number_sub_menu >= 13)
+		{
+			Config.ADS_SETTINGS_BYTE[config_address_reg3] = ADS.ReadConfig(config_address_reg3);
+		}
+		save_Config();
 	}
 
 	pos_pointer = old_pos_pointer;
@@ -60,15 +78,10 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.PGA(PGA_BYPASS_OFF);
-					ADS.Gain(GAIN_8);
-					Serial.println(F("PGA Gain = 8, read datasheet (table 16 in the page 40)"));
-					Serial.println(F("If PGA Bypass OFF you can use PGA GAIN = 8, 16, 32, 64, 128"));
 					BackToMainMenu();
 					break;
 				case 2:
 					ADS.PGA(PGA_BYPASS_ON);
-					Serial.println(F("PGA Gain = 1, read datasheet (table 16 in the page 40)"));
-					Serial.println(F("If PGA Bypass ON you can use PGA GAIN = 1, 2, 4"));
 					BackToMainMenu();
 					break;
 				case 3:
@@ -83,50 +96,35 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.Gain(GAIN_1);
-					ADS.PGA(PGA_BYPASS_ON);
-					Serial.println(F("PGA baypass ON, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 2:
 					ADS.Gain(GAIN_2);
-					ADS.PGA(PGA_BYPASS_ON);
-					Serial.println(F("PGA baypass ON, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 3:
 					ADS.Gain(GAIN_4);
-					ADS.PGA(PGA_BYPASS_ON);
-					Serial.println(F("PGA baypass ON, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 4:
 					ADS.Gain(GAIN_8);
-					ADS.PGA(PGA_BYPASS_OFF);
-					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 5:
 					ADS.Gain(GAIN_16);
-					ADS.PGA(PGA_BYPASS_OFF);
-					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 6:
 					ADS.Gain(GAIN_32);
-					ADS.PGA(PGA_BYPASS_OFF);
-					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 7:
 					ADS.Gain(GAIN_64);
-					ADS.PGA(PGA_BYPASS_OFF);
-					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
+
 					BackToMainMenu();
 					break;
 				case 8:
 					ADS.Gain(GAIN_128);
-					ADS.PGA(PGA_BYPASS_OFF);
-					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 9:
@@ -212,7 +210,7 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				}
 				break;
 
-			case 5: // подменю 5 Conversion
+			case 5: // подменю 5 Temp Sensor
 				switch (value)
 				{
 				case 1:
@@ -229,7 +227,7 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				}
 				break;
 
-			case 6: // подменю 6 Operating
+			case 6: // подменю 6 Conversion mode
 				switch (value)
 				{
 				case 1:
@@ -247,7 +245,7 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				}
 				break;
 
-			case 7: // подменю 7 SPS
+			case 7: // подменю 7 Operating mode
 				switch (value)
 				{
 				case 1:

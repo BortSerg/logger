@@ -1,0 +1,101 @@
+[33mcommit f71490f4bdd1c16bc92e10560ddf3439e9c68280[m[33m ([m[1;36mHEAD -> [m[1;32mlogger[m[33m, [m[1;31morigin/logger[m[33m)[m
+Author: Bort Sergey <bort.sergei@gmail.com>
+Date:   Fri Jan 14 22:19:23 2022 +0200
+
+    start ADC convertation, make main screen
+
+[33mcommit 7d5e5e078d0e60b9bcd2f961e30762141e21f219[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Fri Jan 14 13:40:09 2022 +0200
+
+    add stop/start when enter/exit to main menu
+
+[33mcommit ea675b98f08af1c34d978e900cc6e883c49a9b2f[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Fri Jan 14 13:35:34 2022 +0200
+
+    add stop/start when enter/exit to main menu
+
+[33mcommit 74edefec38f2a61137e80f4b34b5685df6b276e2[m
+Author: Bort Sergey <bort.sergei@gmail.com>
+Date:   Thu Jan 13 23:38:50 2022 +0200
+
+    add save pointer in the sub menu and save position in the main menu after quit in the sub menu
+
+[33mcommit 46f0cccc88a90eb6ccf0bc5d6c3dfda2d395f60f[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Thu Jan 13 13:11:49 2022 +0200
+
+    fix
+
+[33mcommit faf337c8bdf6e32ae2ff93978dbd81560a62a13c[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Thu Jan 13 13:06:52 2022 +0200
+
+    rebuild SwitchClick method
+
+[33mcommit 8451c6fe8434dba2a46b2c98bbd47dc1ff47305d[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Thu Jan 13 13:05:45 2022 +0200
+
+    rebuild SwitchClick method
+
+[33mcommit b44b82d828947349fd848a32de2d47a0503a25e6[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Thu Jan 13 10:04:42 2022 +0200
+
+    rebuild screns show method
+
+[33mcommit 64ad2a7e2b4743b53780883068b8dab76bffba6c[m
+Author: Bort Sergey <bort.sergei@gmail.com>
+Date:   Wed Jan 12 23:29:42 2022 +0200
+
+    create logic of sub menu, add ADS1220 lib and methods
+
+[33mcommit 3367082c27a02f4c49a9647adfacf5bdb988adfe[m
+Author: Bort Sergey <bort.sergei@gmail.com>
+Date:   Tue Jan 11 23:41:06 2022 +0200
+
+    add function button back in the submenu
+
+[33mcommit ac66dba02a297c08c72b587e395b1c894c1d59a6[m
+Author: Bort Sergey <bort.sergei@gmail.com>
+Date:   Tue Jan 11 19:48:56 2022 +0200
+
+    finish main menu, create main screen, redirect to main screen
+
+[33mcommit 7934a3e5a49e5be5bf0b18f54df76e01f7e5c729[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Tue Jan 11 17:27:14 2022 +0200
+
+    rebuild menu
+
+[33mcommit 0185efb6fa3d9f127ef9ec010dfbf8e19e6a6721[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Tue Jan 11 17:25:51 2022 +0200
+
+    rebuild menu
+
+[33mcommit 8878495a0c5f4e8917c739ac3c0fe474a81aae1a[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Tue Jan 11 17:25:33 2022 +0200
+
+    rebuild menu
+
+[33mcommit 244882d493b9cc132b5cc11742e99945131b5e59[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Tue Jan 11 09:22:58 2022 +0200
+
+    edit menu
+
+[33mcommit 827ae056c06e375f3e9d8d269239ee81e7195bcc[m
+Author: Bort Sergey <bort.sergei@gmail.com>
+Date:   Tue Jan 11 06:54:05 2022 +0200
+
+    create menu
+
+[33mcommit bee1af7af347092bd9b6a80dfe37d41ad3cb2083[m
+Author: Bort Serg <bort.s@ajax.systems>
+Date:   Thu Jan 6 09:21:59 2022 +0200
+
+    create repo
