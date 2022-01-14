@@ -52,7 +52,14 @@ void setup()
 	pinMode(rdy_pin, INPUT);
 
 	ADS.begin(cs_pin, rdy_pin);
+	ADS.PGA(PGA_BYPASS_ON);
+	ADS.Gain(GAIN_1);
+	ADS.MuxChanel(MUX_AIN0_AIN1);
 
+	ADS.ConversionMode(CONTINUOUS_MODE);
+	ADS.OperatingMode(NORMAL_MODE);
+	ADS.DataRate(DR_20SPS);
+	ADS.FIR(FIR_50);
 	InitDisplay();
 }
 

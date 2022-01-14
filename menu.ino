@@ -1,7 +1,10 @@
 void DrawMainScreen()
 {
 	myOLED.clrScr();
-	myOLED.print(F("MAIN SCREEN"), CENTER, 0);
+	myOLED.print(F("ADS1220 Logger"), CENTER, 0);
+	myOLED.print(F("ADC value  "), LEFT, 16);
+	myOLED.print(F("Voltage "), 0, 26);
+	myOLED.printNumF(ADS.ConvertToVoltage(ADS.ReadContinuous()), 2, 50, 26);
 	myOLED.update();
 }
 

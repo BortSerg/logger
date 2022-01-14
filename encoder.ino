@@ -23,7 +23,7 @@ void BackToMainScreen()
 	display_number = 0;
 	pos_pointer = 16;
 	number_sub_menu = 0;
-	ADS.Start();	// запуск вычислений
+	ADS.Start(); // запуск вычислений
 }
 
 void SwitchClick(byte condition) // обработка нажатий на энкодер
@@ -35,7 +35,7 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 		switch (display_number)
 		{
 		case 0:					// обработка входа в меню
-		ADS.PowerDown();		// ADS1220 отправить в сон
+			ADS.PowerDown();	// ADS1220 отправить в сон
 			value = 1;			// сброс позиции указателя вменю
 			old_value += value; //имитация вращения энкодера имитация вращения энкодера для начала прорисовки меню
 			display_number = 1;
@@ -60,10 +60,15 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.PGA(PGA_BYPASS_OFF);
+					ADS.Gain(GAIN_8);
+					Serial.println(F("PGA Gain = 8, read datasheet (table 16 in the page 40)"));
+					Serial.println(F("If PGA Bypass OFF you can use PGA GAIN = 8, 16, 32, 64, 128"));
 					BackToMainMenu();
 					break;
 				case 2:
 					ADS.PGA(PGA_BYPASS_ON);
+					Serial.println(F("PGA Gain = 1, read datasheet (table 16 in the page 40)"));
+					Serial.println(F("If PGA Bypass ON you can use PGA GAIN = 1, 2, 4"));
 					BackToMainMenu();
 					break;
 				case 3:
@@ -78,34 +83,50 @@ void SwitchClick(byte condition) // обработка нажатий на эн�
 				{
 				case 1:
 					ADS.Gain(GAIN_1);
+					ADS.PGA(PGA_BYPASS_ON);
+					Serial.println(F("PGA baypass ON, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 2:
 					ADS.Gain(GAIN_2);
+					ADS.PGA(PGA_BYPASS_ON);
+					Serial.println(F("PGA baypass ON, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 3:
-					ADS.Gain(GAIN_8);
+					ADS.Gain(GAIN_4);
+					ADS.PGA(PGA_BYPASS_ON);
+					Serial.println(F("PGA baypass ON, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 4:
 					ADS.Gain(GAIN_8);
+					ADS.PGA(PGA_BYPASS_OFF);
+					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 5:
 					ADS.Gain(GAIN_16);
+					ADS.PGA(PGA_BYPASS_OFF);
+					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 6:
 					ADS.Gain(GAIN_32);
+					ADS.PGA(PGA_BYPASS_OFF);
+					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 7:
 					ADS.Gain(GAIN_64);
+					ADS.PGA(PGA_BYPASS_OFF);
+					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 8:
 					ADS.Gain(GAIN_128);
+					ADS.PGA(PGA_BYPASS_OFF);
+					Serial.println(F("PGA baypass OFF, read datasheet (table 16 in the page 40)"));
 					BackToMainMenu();
 					break;
 				case 9:
