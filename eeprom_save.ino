@@ -22,19 +22,19 @@ void RestoreSettings()
     if (Config.FIRST_CHECK_BYTE != 0x49) // проверка памяти настроек в EEPROM при первом запуске
     {
         Config.FIRST_CHECK_BYTE = 0x49;
-        Config.ADS_SETTINGS_BYTE[0] = 0x00; // дефолтные значения регистров настройки
-        Config.ADS_SETTINGS_BYTE[1] = 0x04;
-        Config.ADS_SETTINGS_BYTE[2] = 0x10;
-        Config.ADS_SETTINGS_BYTE[3] = 0x00;
+        Config.ADS_SETTINGS_BYTE[0] = default_value_reg0; // дефолтные значения регистров настройки
+        Config.ADS_SETTINGS_BYTE[1] = default_value_reg1;
+        Config.ADS_SETTINGS_BYTE[2] = default_value_reg2;
+        Config.ADS_SETTINGS_BYTE[3] = default_value_reg3;
         for (byte i = 0; i < 16; i++)
         {
-            Config.POS_SETTINGS_POINTER[i][0] = i;
-            Config.POS_SETTINGS_POINTER[i][1] = 1;
+            Config.POS_SETTINGS_POINTER[i][0] = i + 1;
+            Config.POS_SETTINGS_POINTER[i][1] = 16;
         }
 
         save_Config();
         ADS.SetDefaultSettings(); // дефолтные настройки уже заданы в самой библиотеке <ADS1220.h>
-        Serial.println(F("ERROR read settings byte. Restore default values"));
+        Serial.println(F("Restore default values is complete"));
     }
     else
     {
@@ -42,6 +42,6 @@ void RestoreSettings()
         {
             ADS.WriteConfig(i, Config.ADS_SETTINGS_BYTE[i]);
         }
-        Serial.println(F("Settings are loaded"));
+        Serial.println(F("Last saved settings are loaded"));
     }
 }
