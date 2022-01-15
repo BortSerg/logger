@@ -5,6 +5,8 @@ void DrawMainScreen()
 	myOLED.print(F("ADC value  "), LEFT, 16);
 	myOLED.print(F("Voltage "), 0, 26);
 	myOLED.printNumF(ADS.ConvertToVoltage(ADS.ReadContinuous()), 2, 50, 26);
+	myOLED.print(F("Current "), 0, 46);
+	myOLED.printNumF((ADS.ConvertToVoltage(ADS.ReadContinuous())/0.1), 2, 50, 46);
 	myOLED.update();
 }
 
