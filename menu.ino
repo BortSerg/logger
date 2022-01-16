@@ -8,7 +8,7 @@ void DrawMainScreen()
 	myOLED.print(F("Current "), 0, 46);
 	myOLED.printNumF((ADS.ConvertToMilivolt(buf) / r_shunt)/* K*/, 3, 50, 46);
 	myOLED.update();
-	Serial.println((ADS.ConvertToMilivolt(buf) / r_shunt)/*K*/);
+	//Serial.println((ADS.ConvertToMilivolt(buf) / r_shunt)/*K*/);
 }
 
 void DrawMainMenu(byte pos)

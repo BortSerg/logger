@@ -43,6 +43,7 @@ long last_millis_ads = 0;
 long mil = 0;
 long buf = 0;
 int count = 0;
+const byte NUM_READ = 20; 
 
 struct ConfigEEPROM
 {
@@ -87,11 +88,15 @@ void loop()
 	if (display_number == 0)
 	{
 		mil = millis();
-		for (byte i = 0; i < 250; i++)
+		
+		for (byte i = 0; i < 100; i++)
 		{
-			buf += ADS.ReadContinuous();
+			buf += MedianFilter(64);
 		}
-		buf = buf / 250;
+		//buf = MedianFilter(20);
+		buf = buf / 100;
+		//buf = RunFilter (buf);
+Serial.println(buf);
 
 		if ((mil - last_millis) > 1000)
 		{
