@@ -5,7 +5,7 @@
 
 #define cs_pin 7
 #define rdy_pin 6
-
+#define K 1.03783072388
 extern uint8_t SmallFont[]; //шрифт
 OLED myOLED(SDA, SCL, 8);
 
@@ -38,6 +38,11 @@ byte limit_value = 17;	  // предел значений энкодера
 bool set_settings_flag = true; // флаг наличия изминений в настройках
 
 float r_shunt = 0.1; // значение сопротивления токоизмерительного шунта (Ом)
+long last_millis = 0;
+long last_millis_ads = 0;
+long mil = 0;
+long buf = 0;
+int count = 0;
 
 struct ConfigEEPROM
 {
@@ -64,11 +69,9 @@ void setup()
 	InitDisplay();
 
 	ADS.begin(cs_pin, rdy_pin);
-	// RestoreSettings();
-	for (byte i; i < 4; i++)
-	{
-		Serial.println(ADS.ReadConfig(i), HEX);
-	}
+	RestoreSettings();
+	ADS.Start();
+	buf = ADS.ReadContinuous();
 }
 
 void loop()
@@ -83,7 +86,20 @@ void loop()
 
 	if (display_number == 0)
 	{
-		DrawMainScreen();
+		mil = millis();
+		for (byte i = 0; i < 250; i++)
+		{
+			buf += ADS.ReadContinuous();
+		}
+		buf = buf / 250;
+
+		if ((mil - last_millis) > 1000)
+		{
+			//Serial.println(buf);
+			buf = ADS.ReadContinuous();
+			last_millis = mil;
+			DrawMainScreen();
+		}
 	}
 
 	if (old_value != value)

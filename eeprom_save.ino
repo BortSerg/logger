@@ -41,6 +41,7 @@ void RestoreSettings()
         for (byte i = 0; i < 4; i++)
         {
             ADS.WriteConfig(i, Config.ADS_SETTINGS_BYTE[i]);
+            ADS.ReadConfig(i);
         }
         Serial.println(F("Last saved settings are loaded"));
     }

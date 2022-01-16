@@ -4,10 +4,11 @@ void DrawMainScreen()
 	myOLED.print(F("ADS1220 Logger"), CENTER, 0);
 	myOLED.print(F("ADC value  "), LEFT, 16);
 	myOLED.print(F("Voltage "), 0, 26);
-	myOLED.printNumF(ADS.ConvertToVoltage(ADS.ReadContinuous()), 2, 50, 26);
+	myOLED.printNumF(ADS.ConvertToMilivolt(buf), 3, 50, 26);
 	myOLED.print(F("Current "), 0, 46);
-	myOLED.printNumF((ADS.ConvertToVoltage(ADS.ReadContinuous()) / r_shunt), 2, 50, 46);
+	myOLED.printNumF((ADS.ConvertToMilivolt(buf) / r_shunt)/* K*/, 3, 50, 46);
 	myOLED.update();
+	Serial.println((ADS.ConvertToMilivolt(buf) / r_shunt)/*K*/);
 }
 
 void DrawMainMenu(byte pos)
